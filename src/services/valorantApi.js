@@ -19,10 +19,13 @@ export const STATIC_QUESTIONS = [
 
 const ROLE_ES = { Duelist: 'Duelista', Controller: 'Controlador', Initiator: 'Iniciador', Sentinel: 'Centinela' };
 const WTYPE_ES = {
-  'Assault Rifles': 'Fusil de asalto', 'Shotguns': 'Escopeta',
-  'Sniper Rifles': 'Francotirador', 'Submachine Guns': 'Subfusil',
-  'Heavy Weapons': 'Arma pesada', 'Pistols': 'Pistola',
-  'Melee': 'Cuerpo a cuerpo', 'Burst Rifles': 'Fusil de ráfaga',
+  'Heavy': 'Arma pesada',
+  'Rifle': 'Fusil de asalto',
+  'Shotgun': 'Escopeta',
+  'Sidearm': 'Pistola',
+  'Sniper': 'Francotirador',
+  'SMG': 'Subfusil',
+  'Melee': 'Cuerpo a cuerpo',
 };
 
 export function shuffle(arr) {
@@ -105,9 +108,15 @@ function genPriceQuestions(weapons) {
 }
 
 function genWeaponTypeQuestions(weapons) {
-  const types = [...new Set(weapons.map(w => WTYPE_ES[w.category?.replace('EEquippableCategory::', '')] || w.category).filter(Boolean))];
+  const cleanCategory = (cat) => cat ? cat.replace('EEquippableCategory::', '') : '';
+  const types = [...new Set(weapons.map(w => {
+    const stripped = cleanCategory(w.category);
+    return WTYPE_ES[stripped] || stripped;
+  }).filter(Boolean))];
+
   return weapons.slice(0, 15).map(w => {
-    const t = WTYPE_ES[w.category?.replace('EEquippableCategory::', '') || ''] || w.category || '';
+    const stripped = cleanCategory(w.category);
+    const t = WTYPE_ES[stripped] || stripped || '';
     const wrong = pickExcept(types, t, 3);
     if (wrong.length < 3) return null;
     return {
