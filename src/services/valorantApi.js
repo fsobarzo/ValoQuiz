@@ -19,13 +19,7 @@ export const STATIC_QUESTIONS = [
 
 const ROLE_ES = { Duelist: 'Duelista', Controller: 'Controlador', Initiator: 'Iniciador', Sentinel: 'Centinela' };
 const WTYPE_ES = {
-  'Heavy': 'Arma pesada',
-  'Rifle': 'Fusil de asalto',
-  'Shotgun': 'Escopeta',
-  'Sidearm': 'Pistola',
-  'Sniper': 'Francotirador',
-  'SMG': 'Subfusil',
-  'Melee': 'Cuerpo a cuerpo',
+  'Heavy': 'Arma pesada', 'Rifle': 'Fusil de asalto', 'Shotgun': 'Escopeta', 'Sidearm': 'Pistola', 'Sniper': 'Francotirador', 'SMG': 'Subfusil', 'Melee': 'Cuerpo a cuerpo'
 };
 
 export function shuffle(arr) {
@@ -111,6 +105,7 @@ function genWeaponTypeQuestions(weapons) {
   const cleanCategory = (cat) => cat ? cat.replace('EEquippableCategory::', '') : '';
   const types = [...new Set(weapons.map(w => {
     const stripped = cleanCategory(w.category);
+    console.log(stripped);
     return WTYPE_ES[stripped] || stripped;
   }).filter(Boolean))];
 
